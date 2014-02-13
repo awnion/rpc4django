@@ -6,6 +6,8 @@ see http://json-rpc.org/wiki/specification
 
 import json
 
+from django.http import HttpResponse
+
 
 # indent the json output by this many characters
 # 0 does newlines only and None does most compact
@@ -130,6 +132,8 @@ class JSONRPCDispatcher(object):
                 return self._encode_result(jsondict.get('id', ''), None, {
                     'message': repr(e),
                     'code': JSONRPC_SERVICE_ERROR})
+            if isinstance(result, HttpResponse):
+                return result
             return self._encode_result(jsondict.get('id', ''), result, None)
         else:
             return self._encode_result(jsondict.get('id', ''), None, {

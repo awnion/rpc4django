@@ -194,6 +194,8 @@ def serve_rpc_request(request):
         if LOG_REQUESTS_RESPONSES:
             logger.debug('Outgoing %s response: %s' % (response_type, resp))
 
+        if isinstance(resp, HttpResponse):
+            return resp
         return HttpResponse(resp, response_type)
     elif request.method == 'OPTIONS':
         # Handle OPTIONS request for "preflighted" requests
